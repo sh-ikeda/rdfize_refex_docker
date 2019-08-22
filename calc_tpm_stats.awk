@@ -8,7 +8,10 @@ function quantile(nums, p,
     l = length(nums)
     t = (l-1)*q+1
     v = nums[int(t)]
-    return v + (t-int(t)) * (nums[int(t)+1]-v)
+    if(l==1)
+        return nums[1]
+    else
+        return v + (t-int(t)) * (nums[int(t)+1]-v)
 }
 
 function mean(nums,
@@ -68,8 +71,12 @@ FNR==1 {
         asort(tpm, sorted)
         m = mean(sorted)
         entry_id = sprintf("%s%010d", entry_id_prefix, entry_id_num)
+        if(size==1)
+            sdOrZero = 0
+        else
+            sdOrZero = sqrt(size/(size-1)*(mean(sqtpm)-m*m))
 
-        print entry_id, $1, id, quantile(sorted, 0), quantile(sorted, 1), quantile(sorted, 2), m, quantile(sorted, 3), quantile(sorted, 4), sqrt(size/(size-1)*(mean(sqtpm)-m*m))
+        print entry_id, $1, id, quantile(sorted, 0), quantile(sorted, 1), quantile(sorted, 2), m, quantile(sorted, 3), quantile(sorted, 4), sdOrZero
 
         entry_id_num++
 
