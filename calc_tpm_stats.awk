@@ -1,17 +1,16 @@
 #! /usr/bin/awk -f
 ### usage: calc_tpm_stats.awk -v entry_id_num=NUM eachsample_table_file tpm_table_file
 
-function quantile(nums, p,
-                  q, l, t, v) {
-    # nums must be sorted in advance
+function quantile(array, p,
+                  q, l, t, v, nums, i) {
+    for(i in array)
+        nums[i] = array[i]
+    # array must be sorted in advance
     q = p/4
     l = length(nums)
     t = (l-1)*q+1
     v = nums[int(t)]
-    if(l==1)
-        return nums[1]
-    else
-        return v + (t-int(t)) * (nums[int(t)+1]-v)
+    return v + (t-int(t)) * (nums[int(t)+1]-v)
 }
 
 function mean(nums,
