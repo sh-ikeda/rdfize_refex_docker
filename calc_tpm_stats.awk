@@ -5,9 +5,21 @@ function quantile(array, p,
                   q, l, t, v, nums, i) {
     for(i in array)
         nums[i] = array[i]
-    # array must be sorted in advance
-    q = p/4
     l = length(nums)
+
+    # array must be sorted in advance
+    for(i=1; i<l; i++)
+        if(nums[i] > nums[i+1]) {
+            print "error: invalid argument: `array` for `quantile` must be sorted" > "/dev/stderr"
+            exit 1
+        }
+
+    if((p<0 || p>4) || p!=int(p)) {
+        print "error: invalid argument: `p` for `quantile` must be integer and 0<=p<=4 ."
+        exit 1
+    }
+
+    q = p/4
     t = (l-1)*q+1
     v = nums[int(t)]
     return v + (t-int(t)) * (nums[int(t)+1]-v)
