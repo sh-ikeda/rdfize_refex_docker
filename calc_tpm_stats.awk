@@ -40,8 +40,10 @@ BEGIN {
     if(!entry_id_prefix)
         entry_id_prefix = "RFX"
 
-    if(!entry_id_num)
+    if(!entry_id_num) {
         entry_id_num = 1
+        print "WARNING: `-v entry_id_num` is not given. Without this, RFX ID of the output begins from RFX0000000001, which might be inappropriate."
+    }
 }
 
 FNR==NR {
@@ -51,6 +53,10 @@ FNR==NR {
 
 FNR==1 {
     for(i=2; i<=NF; i++) {
+        if(!group_id[$i]) {
+            print "ERROR: Sample ID " $i " is not assigned RES ID." > "/dev/stderr"
+            exit 1
+        }
         if(!group_size[group_id[$i]])
             group_size[group_id[$i]] = 1
         else
