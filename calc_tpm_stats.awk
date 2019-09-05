@@ -72,7 +72,7 @@ FNR==1 {
             printf "\n"
         }
 
-    print "ID\tGeneID\tSampleID\tMin\t1stQu\tMedian\tMean\t3rdQu\tMax\tSD"
+    print "ID\tGeneID\tSampleID\tMin\t1stQu\tMedian\tMean\t3rdQu\tMax\tSD\tlogMin\tlog1stQu\tlogMedian\tlogMean\tlog3rdQu\tlogMax\tlogSD"
 
     next
 }
@@ -83,22 +83,35 @@ FNR==1 {
 
         for(j=1; j<=size; j++) {
             tpm[j] = $(group_element_column[id, j])
-            sqtpm[j] = tpm[j]*tpm[j]
+            sqtpm[j] = tpm[j]^2
         }
         asort(tpm, sorted)
-        m = mean(sorted)
-        entry_id = sprintf("%s%010d", entry_id_prefix, entry_id_num)
-        if(size==1)
-            sdOrZero = 0
-        else
-            sdOrZero = sqrt(size/(size-1)*(mean(sqtpm)-m*m))
 
-        print entry_id, $1, id, quantile(sorted, 0), quantile(sorted, 1), quantile(sorted, 2), m, quantile(sorted, 3), quantile(sorted, 4), sdOrZero
+        for(j=1; j<=size; j++) {
+            logtpm[j] = log(sorted[j]+1)/log(2)
+            sqlogtpm[j] = logtpm[j]^2
+        }
+
+        m = mean(sorted)
+        lm = mean(logtpm)
+        entry_id = sprintf("%s%010d", entry_id_prefix, entry_id_num)
+        if(size==1) {
+            sdOrZero = 0
+            log_sdOrZero = 0
+        }
+        else {
+            sdOrZero = sqrt(size/(size-1)*(mean(sqtpm)-m^2))
+            log_sdOrZero = sqrt(size/(size-1)*(mean(sqlogtpm)-lm^2))
+        }
+
+        print entry_id, $1, id, quantile(sorted, 0), quantile(sorted, 1), quantile(sorted, 2), m, quantile(sorted, 3), quantile(sorted, 4), sdOrZero, quantile(logtpm, 0), quantile(logtpm, 1), quantile(logtpm, 2), lm, quantile(logtpm, 3), quantile(logtpm, 4), log_sdOrZero
 
         entry_id_num++
 
         delete(tpm)
         delete(sorted)
         delete(sqtpm)
+        delete(logtpm)
+        delete(sqlogtpm)
     }
 }
