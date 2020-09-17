@@ -8,7 +8,7 @@ BEGIN {
 FNR>=2 {
     resID = $1
     desc = $2
-    category = $3
+    category = $4
     order = gensub("RES0*", "", "g", resID)
 
     print "refexs:" resID
