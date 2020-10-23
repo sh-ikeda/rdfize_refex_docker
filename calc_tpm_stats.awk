@@ -93,7 +93,7 @@ FNR==1 {
         }
 
         m = mean(sorted)
-        lm = mean(logtpm)
+        lm = log(m+1)/log(2)
         entry_id = sprintf("%s%010d", entry_id_prefix, entry_id_num)
         if(size==1) {
             sdOrZero = 0
