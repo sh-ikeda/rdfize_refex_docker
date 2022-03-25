@@ -72,7 +72,7 @@ FNR==1 {
             printf "\n"
         }
 
-    print "ID\tGeneID\tSampleID\tMin\t1stQu\tMedian\tMean\t3rdQu\tMax\tSD\tlogMin\tlog1stQu\tlogMedian\tlogMean\tlog3rdQu\tlogMax\tlogSD"
+    print "RefEx_ID\tGene_ID\tRefEx_Sample_ID\tMin\t1stQu\tMedian\tMean\t3rdQu\tMax\tSD\tlogMin\tlog1stQu\tlogMedian\tlogMean\tlog3rdQu\tlogMax\tlogSD"
 
     next
 }
