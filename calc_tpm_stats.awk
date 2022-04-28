@@ -54,8 +54,8 @@ FNR==NR {
 FNR==1 {
     for(i=2; i<=NF; i++) {
         if(!group_id[$i]) {
-            print "ERROR: Sample ID " $i " is not assigned RES ID." > "/dev/stderr"
-            exit 1
+            print "WARNING: Sample ID " $i " is not assigned RES ID." > "/dev/stderr"
+            continue
         }
         if(!group_size[group_id[$i]])
             group_size[group_id[$i]] = 1
