@@ -1,5 +1,5 @@
 #! /usr/bin/awk -f
-### usage: calc_tpm_stats.awk -v entry_id_num=NUM eachsample_table_file tpm_table_file
+### usage: calc_tpm_stats.awk -v entry_id_num=NUM [-v col=NUM] eachsample_table_file tpm_table_file
 
 function quantile(array, p,
                   q, l, t, v, nums, i) {
@@ -44,13 +44,20 @@ BEGIN {
         entry_id_num = 1
         print "WARNING: `-v entry_id_num` is not given. Without this, RFX ID of the output begins from RFX0000000001, which might be inappropriate."
     }
+
+    if(!col) {
+        col = 2
+        print "WARNING: `-v col` is not given. By default, the second column of the eachsample table is expected to match the column names of the TPM file"
+    }
 }
 
+# eachsample
 FNR==NR {
-    group_id[$2] = $1
+    group_id[$col] = $1
     next
 }
 
+# TPM
 FNR==1 {
     for(i=2; i<=NF; i++) {
         if(!group_id[$i]) {
