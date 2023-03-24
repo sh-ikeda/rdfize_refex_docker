@@ -31,5 +31,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}, ***/rdfize_refex/${{ github.event.inputs.tag }}
+          tags: ${{ steps.meta.outputs.tags }}, ***/rdfize_refex:${{ github.event.inputs.tag }}
           labels: ${{ steps.meta.outputs.labels }}
