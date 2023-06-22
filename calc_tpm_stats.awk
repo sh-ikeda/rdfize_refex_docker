@@ -15,7 +15,7 @@ function quantile(array, p,
         }
 
     if((p<0 || p>4) || p!=int(p)) {
-        print "error: invalid argument: `p` for `quantile` must be integer and 0<=p<=4 ."
+        print "error: invalid argument: `p` for `quantile` must be integer and 0<=p<=4 ." > "/dev/stderr"
         exit 1
     }
 
@@ -42,12 +42,12 @@ BEGIN {
 
     if(!entry_id_num) {
         entry_id_num = 1
-        print "WARNING: `-v entry_id_num` is not given. Without this, RFX ID of the output begins from RFX0000000001, which might be inappropriate."
+        print "WARNING: `-v entry_id_num` is not given. Without this, RFX ID of the output begins from RFX0000000001, which might be inappropriate." > "/dev/stderr"
     }
 
     if(!col) {
         col = 2
-        print "WARNING: `-v col` is not given. By default, the second column of the eachsample table is expected to match the column names of the TPM file"
+        print "WARNING: `-v col` is not given. By default, the second column of the eachsample table is expected to match the column names of the TPM file" > "/dev/stderr"
     }
 }
 
